@@ -6,12 +6,16 @@ provider "aws" {
 }
 
 
-
+# instance
 resource "aws_instance" "web" {
+  # find the ami from was EC2 dashboard 
   ami                    = "ami-02f3416038bdb17fb"
   instance_type          = "t2.micro"
+  # name of the private key file
   key_name               = "cc"
+  # security group name
   vpc_security_group_ids = ["gczhao"]
+  # command that would be executed
   user_data              = <<-EOF
                 #!/bin/bash
                 sudo apt update -y
@@ -20,7 +24,8 @@ resource "aws_instance" "web" {
                 sudo docker run --rm -p 6080:6080 -v $(pwd):/data -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/.X11-unix:/tmp/.X11-unix  --privileged --group-add root biodepot/bwb
                 EOF
   tags = {
-    Name = "ubuntu"
+    # instance name
+    Name = "bwb"
   }
 }
 
